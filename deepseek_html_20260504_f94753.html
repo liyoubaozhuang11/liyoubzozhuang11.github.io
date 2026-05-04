@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>利友包装 | 专业包装解决方案</title>
+    <!-- Font Awesome 6 (免费图标库) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-body: #f6f9f0;      /* 柔和环保底色 */
+            --sidebar-bg: #ffffff;
+            --sidebar-hover: #eef4e4;
+            --active-color: #2c6e2f;
+            --active-light: rgba(44, 110, 47, 0.08);
+            --card-bg: #ffffff;
+            --border-color: #e2e8d5;
+            --text-primary: #1f3b2c;
+            --text-secondary: #5a6e4a;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.06);
+            --radius-lg: 24px;
+            --radius-md: 18px;
+            --radius-sm: 14px;
+            --transition: all 0.25s ease;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 布局容器 */
+        .app {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        /* 左侧导航栏 (固定悬浮 Sticky 效果) */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            z-index: 30;
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: var(--shadow-sm);
+            height: 100%;
+            overflow-y: auto;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+        }
+
+        .logo {
+            padding: 30px 24px 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+        .logo h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2b5e2f, #4c8b4a);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo h1 i {
+            background: none;
+            color: #2c6e2f;
+            font-size: 1.8rem;
+        }
+        .logo p {
+            font-size: 0.75rem;
+            color: #6f8f6b;
+            margin-top: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* 导航菜单 */
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 16px 24px 16px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 18px;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            background: transparent;
+        }
+        .nav-item i {
+            width: 24px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        .nav-item:hover {
+            background: var(--sidebar-hover);
+            color: var(--text-primary);
+        }
+        .nav-item.active {
+            background: var(--active-light);
+            color: var(--active-color);
+            font-weight: 600;
+        }
+        .nav-item.active i {
+            color: var(--active-color);
+        }
+
+        /* 右侧主区域 */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            background: #fefcf5;
+            position: relative;
+        }
+
+        /* 搜索区 (精致) */
+        .search-area {
+            background: white;
+            margin: 20px 28px 24px 28px;
+            padding: 16px 28px;
+            border-radius: 60px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px;
+            backdrop-filter: blur(2px);
+            position: sticky;
+            top: 16px;
+            z-index: 20;
+            background: rgba(255, 255, 255, 0.92);
+        }
+        .engine-group {
+            display: flex;
+            gap: 6px;
+            background: #f0f3ea;
+            padding: 5px;
+            border-radius: 48px;
+        }
+        .engine-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #4a5b3c;
+        }
+        .engine-btn.active {
+            background: #2c6e2f;
+            color: white;
+            box-shadow: 0 4px 8px rgba(44, 110, 47, 0.15);
+        }
+        .search-input-wrapper {
+            flex: 1;
+            display: flex;
+            gap: 8px;
+            background: #f8faf3;
+            border-radius: 48px;
+            padding: 4px 4px 4px 24px;
+            align-items: center;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 12px 0;
+            font-size: 0.95rem;
+            outline: none;
+            font-weight: 400;
+        }
+        .search-btn {
+            background: #2c6e2f;
+            border: none;
+            color: white;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .search-btn:hover {
+            background: #1f5522;
+        }
+
+        /* 内容区域 */
+        .categories-container {
+            padding: 0 28px 48px 28px;
+        }
+        .category-section {
+            margin-bottom: 64px;
+            scroll-margin-top: 100px;
+        }
+        .category-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.3px;
+            background: linear-gradient(120deg, #2a5c2e, #467a3e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            border-left: 5px solid #3c873a;
+            padding-left: 20px;
+        }
+        /* 二级分类 Tabs */
+        .secondary-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 28px;
+            border-bottom: 1px solid #e2e8d0;
+            padding-bottom: 12px;
+        }
+        .sec-tab {
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            background: transparent;
+            color: #5b6e4a;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .sec-tab:hover {
+            background: #e9f3e3;
+            color: #2c6e2f;
+        }
+        .sec-tab.active {
+            background: #2c6e2f;
+            color: white;
+            box-shadow: 0 6px 12px rgba(44, 110, 47, 0.2);
+        }
+        /* 卡片网格 */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 24px;
+            margin-top: 12px;
+        }
+        /* 卡片设计 */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
+            border: 1px solid #eef0e7;
+            transition: transform 0.22s, box-shadow 0.25s;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 28px -12px rgba(0, 0, 0, 0.12);
+            border-color: #cfe2c4;
+        }
+        .card-icon {
+            font-size: 2.4rem;
+            width: 56px;
+            text-align: center;
+            color: #3a7b3a;
+            flex-shrink: 0;
+        }
+        .card-content {
+            flex: 1;
+        }
+        .card-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #1f3b2c;
+        }
+        .card-desc {
+            font-size: 0.82rem;
+            color: #6a7e5a;
+            line-height: 1.45;
+        }
+
+        /* 汉堡菜单 & 移动端遮罩 */
+        .burger {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 50;
+            background: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 30px;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            box-shadow: 0 5px 14px rgba(0,0,0,0.08);
+            cursor: pointer;
+            border: 1px solid #dde3cf;
+            color: #2c6e2f;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(3px);
+            z-index: 25;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                transform: translateX(-100%);
+                box-shadow: 2rem 0 2rem rgba(0,0,0,0.1);
+                height: 100%;
+                z-index: 40;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .burger {
+                display: flex;
+            }
+            .overlay.show {
+                display: block;
+            }
+            .search-area {
+                margin: 16px 16px 20px;
+                flex-direction: column;
+                align-items: stretch;
+                border-radius: 32px;
+            }
+            .categories-container {
+                padding: 0 16px 32px 16px;
+            }
+            .category-title {
+                font-size: 1.6rem;
+            }
+            .card {
+                padding: 16px;
+            }
+        }
+
+        /* 滚动条 */
+        .main-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .main-content::-webkit-scrollbar-track {
+            background: #e8efdf;
+            border-radius: 10px;
+        }
+        .main-content::-webkit-scrollbar-thumb {
+            background: #aec29e;
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <!-- 左侧导航栏 -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1><i class="fas fa-box-open"></i> 利友包装</h1>
+            <p>柳州市利友包装材料有限公司 · 品质包装智造者</p>
+        </div>
+        <div class="nav-menu" id="navMenu"></div>
+    </div>
+
+    <!-- 右侧主内容区 -->
+    <div class="main-content" id="mainContent">
+        <div class="search-area">
+            <div class="engine-group" id="engineGroup">
+                <button data-engine="baidu" class="engine-btn active">百度</button>
+                <button data-engine="google" class="engine-btn">谷歌</button>
+                <button data-engine="bing" class="engine-btn">必应</button>
+            </div>
+            <div class="search-input-wrapper">
+                <i class="fas fa-search" style="color:#8ea57b"></i>
+                <input type="text" id="searchInput" placeholder="搜索包装知识、产品信息或行业资讯..." autocomplete="off">
+                <button class="search-btn" id="searchBtn">搜索</button>
+            </div>
+        </div>
+        <div class="categories-container" id="categoriesContainer"></div>
+    </div>
+
+    <!-- 移动端按钮+遮罩 -->
+    <div class="burger" id="burgerBtn">
+        <i class="fas fa-bars"></i>
+    </div>
+    <div class="overlay" id="overlay"></div>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // 利友包装 - 完整数据结构 (一级分类 + 二级分类 + 卡片)
+    // 包含所有业务内容: 平口箱,天地盒,飞机盒,手提袋,黄板箱,前盖箱,彩箱,白板箱,彩盒,腰封,蛋糕盒
+    // --------------------------------------------------------------
+    const categoriesData = [
+        {
+            id: "about",
+            title: "🌿 走进利友",
+            icon: "fas fa-leaf",
+            secondCategories: [
+                {
+                    name: "企业使命",
+                    cards: [
+                        { title: "绿色包装引领者", desc: "致力于可循环、低碳环保包装方案，守护绿水青山。", icon: "fas fa-seedling", url: "#" },
+                        { title: "客户至上", desc: "24小时响应机制，从设计到交付全程无忧。", icon: "fas fa-handshake", url: "#" }
+                    ]
+                },
+                {
+                    name: "文化理念",
+                    cards: [
+                        { title: "匠心精神", desc: "每一道工序严格把控，打造精密包装结构。", icon: "fas fa-microchip", url: "#" },
+                        { title: "共创共赢", desc: "与合作伙伴共同成长，赋能地方经济。", icon: "fas fa-chart-line", url: "#" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: "products",
+            title: "📦 核心产品系列",
+            icon: "fas fa-cubes",
+            secondCategories: [
+                { name: "平口箱", cards: [
+                    { title: "电商平口箱", desc: "5层瓦楞，适合快递物流，抗压性强。", icon: "fas fa-box", url: "https://www.liyoupack.com/product/pingkou-e" },
+                    { title: "加厚平口箱", desc: "特硬材质，承重可达50kg，工业级包装。", icon: "fas fa-weight-hanging", url: "https://www.liyoupack.com/product/pingkou-heavy" }
+                ] },
+                { name: "天地盒", cards: [
+                    { title: "高档天地盖礼盒", desc: "磁吸翻盖，表面裱糊特种纸，奢侈品首选。", icon: "fas fa-gift", url: "https://www.liyoupack.com/product/tiandi-luxury" },
+                    { title: "简约天地盒", desc: "性价比高，适用化妆品、电子产品包装。", icon: "fas fa-mobile-alt", url: "https://www.liyoupack.com/product/tiandi-simple" }
+                ] },
+                { name: "飞机盒", cards: [
+                    { title: "快递飞机盒", desc: "一纸成型，免胶带设计，环保便捷。", icon: "fas fa-plane", url: "https://www.liyoupack.com/product/feiji-express" },
+                    { title: "加强飞机盒", desc: "双层瓦楞，防震抗摔，跨境物流首选。", icon: "fas fa-shield-alt", url: "https://www.liyoupack.com/product/feiji-strong" }
+                ] },
+                { name: "手提袋", cards: [
+                    { title: "牛皮纸手提袋", desc: "全棉绳提手，印刷Logo，服装/礼品店专用。", icon: "fas fa-bag-shopping", url: "https://www.liyoupack.com/product/shouyidai-kraft" },
+                    { title: "白卡手提袋", desc: "亮光覆膜，高端品牌形象袋。", icon: "fas fa-star", url: "https://www.liyoupack.com/product/shouyidai-white" }
+                ] },
+                { name: "黄板箱", cards: [
+                    { title: "重型黄板箱", desc: "高克重纸板，重型机械出口包装。", icon: "fas fa-truck", url: "https://www.liyoupack.com/product/huangban-heavy" },
+                    { title: "通用黄板箱", desc: "经济耐用，适合工业零部件储存。", icon: "fas fa-cog", url: "https://www.liyoupack.com/product/huangban-normal" }
+                ] },
+                { name: "前盖箱", cards: [
+                    { title: "前开盖展示箱", desc: "带前置窗口，超市/零售展示易取。", icon: "fas fa-store", url: "https://www.liyoupack.com/product/qiangaixiang-show" },
+                    { title: "密封前盖箱", desc: "防尘设计，适合精密仪器包装。", icon: "fas fa-microscope", url: "https://www.liyoupack.com/product/qiangaixiang-seal" }
+                ] },
+                { name: "彩箱", cards: [
+                    { title: "全彩印刷箱", desc: "4色印刷，食品/饮料行业热销。", icon: "fas fa-palette", url: "https://www.liyoupack.com/product/caixiang-color" },
+                    { title: "UV彩箱", desc: "防刮耐磨，高端电子产品外箱。", icon: "fas fa-laptop", url: "https://www.liyoupack.com/product/caixiang-uv" }
+                ] },
+                { name: "白板箱", cards: [
+                    { title: "涂布白板箱", desc: "表面洁白平整，贴标效果出众。", icon: "fas fa-file-alt", url: "https://www.liyoupack.com/product/baibanxian-label" },
+                    { title: "防水白板箱", desc: "覆膜工艺，冷链运输防潮。", icon: "fas fa-water", url: "https://www.liyoupack.com/product/baibanxian-waterproof" }
+                ] },
+                { name: "彩盒", cards: [
+                    { title: "折叠彩盒", desc: "自动糊底，化妆品/饰品精致包装。", icon: "fas fa-magic", url: "https://www.liyoupack.com/product/caihe-fold" },
+                    { title: "抽屉式彩盒", desc: "抽拉结构，高端礼赠场景。", icon: "fas fa-draw-polygon", url: "https://www.liyoupack.com/product/caihe-drawer" }
+                ] },
+                { name: "腰封", cards: [
+                    { title: "牛皮腰封", desc: "简约环保，书籍/礼盒束带装饰。", icon: "fas fa-tape", url: "https://www.liyoupack.com/product/yaofeng-paper" },
+                    { title: "烫金腰封", desc: "尊贵金箔，增加品牌溢价。", icon: "fas fa-certificate", url: "https://www.liyoupack.com/product/yaofeng-gold" }
+                ] },
+                { name: "蛋糕盒", cards: [
+                    { title: "透明蛋糕盒", desc: "PET材质，抗凝露，裱花展示清晰。", icon: "fas fa-birthday-cake", url: "https://www.liyoupack.com/product/dangao-clear" },
+                    { title: "瓦楞蛋糕盒", desc: "环保可折叠，烘焙店配送佳品。", icon: "fas fa-carrot", url: "https://www.liyoupack.com/product/dangao-corrugated" }
+                ] }
+            ]
+        },
+        {
+            id: "quality",
+            title: "⚙️ 品质&定制",
+            icon: "fas fa-certificate",
+            secondCategories: [
+                {
+                    name: "质量认证",
+                    cards: [
+                        { title: "ISO9001体系", desc: "国际标准化质量管理，出厂合格率99.8%", icon: "fas fa-check-double", url: "#" },
+                        { title: "SGS检测", desc: "环保材料认证，符合欧盟RoHS指令", icon: "fas fa-flask", url: "#" }
+                    ]
+                },
+                {
+                    name: "定制能力",
+                    cards: [
+                        { title: "自由设计", desc: "专业团队1对1，免费打样，3天出成品", icon: "fas fa-pencil-ruler", url: "#" },
+                        { title: "特殊工艺", desc: "烫金/UV/击凸/覆膜，一站式后道加工", icon: "fas fa-crown", url: "#" }
+                    ]
+                }
+            ]
+        },
+        {
+            id: "contact",
+            title: "📞 联系利友",
+            icon: "fas fa-phone-alt",
+            secondCategories: [
+                {
+                    name: "销售网络",
+                    cards: [
+                        { title: "柳州总部", desc: "柳州市柳江区新兴工业园 · 热线: 0772-123456", icon: "fas fa-building", url: "#" },
+                        { title: "华南办事处", desc: "广州·东莞 仓储直发，极速配送", icon: "fas fa-ship", url: "#" }
+                    ]
+                },
+                {
+                    name: "在线支持",
+                    cards: [
+                        { title: "产品咨询", desc: "24h在线报价，疑难解答", icon: "fab fa-weixin", url: "#" },
+                        { title: "售后反馈", desc: "质量问题先行赔付，终身技术支持", icon: "fas fa-headset", url: "#" }
+                    ]
+                }
+            ]
+        }
+    ];
+
+    // 全局存储每个一级分类当前激活二级索引 (默认为0)
+    let activeSecondaryMap = new Map();  // key: 一级分类id或索引, 这里用索引
+    let currentEngine = "baidu";
+    const engineMap = {
+        baidu: "https://www.baidu.com/s?wd=",
+        google: "https://www.google.com/search?q=",
+        bing: "https://www.bing.com/search?q="
+    };
+
+    // DOM 元素
+    const mainContent = document.getElementById("mainContent");
+    const categoriesContainer = document.getElementById("categoriesContainer");
+    const navMenu = document.getElementById("navMenu");
+    const sidebar = document.getElementById("sidebar");
+    const burgerBtn = document.getElementById("burgerBtn");
+    const overlay = document.getElementById("overlay");
+    const searchInput = document.getElementById("searchInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const engineBtns = document.querySelectorAll(".engine-btn");
+
+    // 初始化引擎切换 + 搜索逻辑
+    function initEngine() {
+        engineBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                engineBtns.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentEngine = btn.dataset.engine;
+            });
+        });
+        searchBtn.addEventListener("click", () => {
+            const kw = searchInput.value.trim();
+            if (!kw) return;
+            window.open(engineMap[currentEngine] + encodeURIComponent(kw), "_blank");
+        });
+        searchInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") searchBtn.click();
+        });
+    }
+
+    // 渲染左侧导航栏
+    function renderSidebar() {
+        navMenu.innerHTML = "";
+        categoriesData.forEach((cat, idx) => {
+            const navItem = document.createElement("div");
+            navItem.className = "nav-item";
+            navItem.setAttribute("data-nav-idx", idx);
+            navItem.innerHTML = `<i class="${cat.icon}"></i><span>${cat.title}</span>`;
+            navMenu.appendChild(navItem);
+        });
+    }
+
+    // 生成单个分类下卡片网格 (依据二级分类索引)
+    function generateCardsForSec(category, secIndex) {
+        const sec = category.secondCategories[secIndex];
+        if (!sec || !sec.cards.length) return '<div class="cards-grid"><div class="card"><div class="card-icon"><i class="fas fa-info-circle"></i></div><div class="card-content">暂无详细卡片</div></div></div>';
+        let cardsHtml = '<div class="cards-grid">';
+        sec.cards.forEach(card => {
+            cardsHtml += `
+                <div class="card" data-url="${card.url}">
+                    <div class="card-icon"><i class="${card.icon}"></i></div>
+                    <div class="card-content">
+                        <div class="card-title">${escapeHtml(card.title)}</div>
+                        <div class="card-desc">${escapeHtml(card.desc)}</div>
+                    </div>
+                </div>
+            `;
+        });
+        cardsHtml += '</div>';
+        return cardsHtml;
+    }
+
+    // 简单防XSS
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // 渲染右侧全部内容 (同时保留二级激活索引)
+    function renderRightContent() {
+        categoriesContainer.innerHTML = "";
+        categoriesData.forEach((category, catIdx) => {
+            let currentSecIndex = activeSecondaryMap.get(catIdx);
+            if (currentSecIndex === undefined) currentSecIndex = 0;
+            if (!category.secondCategories[currentSecIndex]) currentSecIndex = 0;
+            
+            const sectionDiv = document.createElement("div");
+            sectionDiv.className = "category-section";
+            sectionDiv.setAttribute("data-cat-idx", catIdx);
+            // 分类标题
+            const titleHtml = `<div class="category-title">${category.title}</div>`;
+            // 生成二级tabs
+            let tabsHtml = `<div class="secondary-tabs" data-cat-tabs="${catIdx}">`;
+            category.secondCategories.forEach((sec, secIdx) => {
+                const activeClass = (secIdx === currentSecIndex) ? "active" : "";
+                tabsHtml += `<div class="sec-tab ${activeClass}" data-sec-idx="${secIdx}">${escapeHtml(sec.name)}</div>`;
+            });
+            tabsHtml += `</div>`;
+            const cardsWrapperId = `cards-wrapper-${catIdx}`;
+            const cardsHtml = `<div class="cards-wrapper" id="${cardsWrapperId}" data-cat-cards="${catIdx}">${generateCardsForSec(category, currentSecIndex)}</div>`;
+            sectionDiv.innerHTML = titleHtml + tabsHtml + cardsHtml;
+            categoriesContainer.appendChild(sectionDiv);
+        });
+        
+        // 绑定二级标签切换 (事件委托)
+        document.querySelectorAll(".secondary-tabs").forEach(tabsContainer => {
+            const catIdxAttr = tabsContainer.getAttribute("data-cat-tabs");
+            if (!catIdxAttr) return;
+            const catIndex = parseInt(catIdxAttr, 10);
+            const tabButtons = tabsContainer.querySelectorAll(".sec-tab");
+            tabButtons.forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const newSecIdx = parseInt(btn.dataset.secIdx, 10);
+                    if (isNaN(newSecIdx)) return;
+                    activeSecondaryMap.set(catIndex, newSecIdx);
+                    // 更新当前分类的卡片区域
+                    const targetCategory = categoriesData[catIndex];
+                    const wrapper = document.querySelector(`.cards-wrapper[data-cat-cards="${catIndex}"]`);
+                    if (wrapper && targetCategory) {
+                        wrapper.innerHTML = generateCardsForSec(targetCategory, newSecIdx);
+                    }
+                    // 更新该分类tabs active样式
+                    const currentTabs = document.querySelector(`.secondary-tabs[data-cat-tabs="${catIndex}"]`);
+                    if (currentTabs) {
+                        const tabs = currentTabs.querySelectorAll(".sec-tab");
+                        tabs.forEach((tab, idx) => {
+                            if (idx === newSecIdx) tab.classList.add("active");
+                            else tab.classList.remove("active");
+                        });
+                    }
+                    // 重新绑定卡片点击事件 (全局委托)
+                });
+            });
+        });
+        // 卡片点击委托 (新标签页打开)
+        categoriesContainer.removeEventListener("click", cardGlobalClick);
+        categoriesContainer.addEventListener("click", cardGlobalClick);
+    }
+
+    function cardGlobalClick(e) {
+        const card = e.target.closest(".card");
+        if (card && card.dataset.url) {
+            e.preventDefault();
+            // 如果url是# 或者空则不跳转模拟展示（但依然新标签打开保留演示）
+            if (card.dataset.url !== "#") {
+                window.open(card.dataset.url, "_blank");
+            } else {
+                // 占位符打开公司官网首页
+                window.open("https://www.liyoupack.com", "_blank");
+            }
+        }
+    }
+
+    // 滚动监听高亮左侧导航
+    function updateScrollSpy() {
+        const sections = document.querySelectorAll(".category-section");
+        if (!sections.length) return;
+        const scrollTop = mainContent.scrollTop;
+        let activeIndex = 0;
+        for (let i = 0; i < sections.length; i++) {
+            const section = sections[i];
+            const offsetTop = section.offsetTop - 110;
+            if (scrollTop >= offsetTop) {
+                activeIndex = i;
+            } else break;
+        }
+        const navItems = document.querySelectorAll(".nav-item");
+        navItems.forEach((item, idx) => {
+            if (idx === activeIndex) item.classList.add("active");
+            else item.classList.remove("active");
+        });
+    }
+
+    // 点击左侧平滑滚动
+    function scrollToCategory(index) {
+        const sections = document.querySelectorAll(".category-section");
+        if (sections[index]) {
+            const targetY = sections[index].offsetTop - 20;
+            mainContent.scrollTo({ top: targetY, behavior: "smooth" });
+            if (window.innerWidth <= 768) closeSidebar();
+        }
+    }
+
+    function attachNavEvents() {
+        const navItems = document.querySelectorAll(".nav-item");
+        navItems.forEach((item, idx) => {
+            const newItem = item.cloneNode(true);
+            item.parentNode.replaceChild(newItem, item);
+            newItem.addEventListener("click", (e) => {
+                e.preventDefault();
+                scrollToCategory(idx);
+            });
+        });
+    }
+
+    // 移动端侧边栏逻辑
+    function initMobile() {
+        const closeSidebarFn = () => closeSidebar();
+        burgerBtn.addEventListener("click", () => {
+            sidebar.classList.add("open");
+            overlay.classList.add("show");
+        });
+        overlay.addEventListener("click", closeSidebarFn);
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove("open");
+                overlay.classList.remove("show");
+            }
+        });
+        function closeSidebar() {
+            sidebar.classList.remove("open");
+            overlay.classList.remove("show");
+        }
+        window.closeSidebar = closeSidebar;
+    }
+
+    // 初始化地图与滚动监听
+    function init() {
+        // 初始化二级索引默认0
+        for (let i = 0; i < categoriesData.length; i++) {
+            if (!activeSecondaryMap.has(i)) activeSecondaryMap.set(i, 0);
+        }
+        initEngine();
+        renderSidebar();
+        renderRightContent();
+        attachNavEvents();
+        initMobile();
+        mainContent.addEventListener("scroll", updateScrollSpy);
+        setTimeout(() => updateScrollSpy(), 120);
+        // 监听内容高度变化（防止动态切换后滚动偏移）
+        const resizeObserver = new ResizeObserver(() => updateScrollSpy());
+        resizeObserver.observe(categoriesContainer);
+    }
+    init();
+</script>
+</body>
+</html>
